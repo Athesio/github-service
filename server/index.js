@@ -149,5 +149,16 @@ app.get('/api/github/repo/contents/get', (req, res) => {
   });
 });
 
+app.post('/api/github/repo/update', (req, res) => {
+  let { updatedFiles, repo, username, commitMessage, accessToken } = req.body;
+  let url = `https://api.github.com/repos/${username}/${repo.name}/contents/`;
+
+  axios.get(url, { params: { access_token: accessToken }, headers: { 'User-Agent': 'athesio' } })
+    .then(repo => {
+      let repoContents = repo.data;
+      res.send(repo.data)
+    });
+});
+
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`listening on port: ${port}`));
